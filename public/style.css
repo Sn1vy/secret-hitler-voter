@@ -1,0 +1,453 @@
+/* ── Design Tokens ──────────────────────────────────────────────── */
+:root {
+  --color-parchment: #E8E0D0;
+  --color-ink:       #1A1510;
+  --color-fascist:   #B52B27;
+  --color-liberal:   #2B4B8C;
+  --color-bone:      #F2EDE4;
+  --color-muted:     #7A7060;
+
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-body:    'IBM Plex Serif', serif;
+  --font-mono:    'IBM Plex Mono', monospace;
+
+  --border:     2px solid var(--color-ink);
+  --touch-min:  48px;
+}
+
+/* ── Reset & Base ───────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--color-parchment);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  min-height: 100dvh;
+  line-height: 1.4;
+}
+
+/* ── Screen Visibility ──────────────────────────────────────────── */
+[data-screen] {
+  display: none;
+}
+
+[data-screen][data-active] {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ── Layout ─────────────────────────────────────────────────────── */
+#app {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 32px 16px 48px;
+  min-height: 100dvh;
+}
+
+/* ── Typography ─────────────────────────────────────────────────── */
+.app-title {
+  font-family: var(--font-display);
+  font-size: clamp(52px, 16vw, 80px);
+  line-height: 0.9;
+  letter-spacing: 0.02em;
+  margin-top: 16px;
+}
+
+.app-subtitle {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.15em;
+  color: var(--color-muted);
+}
+
+h2 {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 8vw, 40px);
+  letter-spacing: 0.03em;
+  line-height: 1;
+}
+
+.mono {
+  font-family: var(--font-mono);
+}
+
+.status-text {
+  font-family: var(--font-body);
+  font-style: italic;
+  color: var(--color-muted);
+  font-size: 16px;
+}
+
+/* ── Buttons ────────────────────────────────────────────────────── */
+button {
+  font-family: var(--font-display);
+  font-size: 22px;
+  letter-spacing: 0.06em;
+  min-height: var(--touch-min);
+  padding: 0 20px;
+  border: var(--border);
+  background: var(--color-ink);
+  color: var(--color-parchment);
+  cursor: pointer;
+  text-align: center;
+  width: 100%;
+  transition: background 0.08s, color 0.08s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:active:not(:disabled) {
+  background: var(--color-fascist);
+  border-color: var(--color-fascist);
+  color: var(--color-bone);
+}
+
+button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+button:focus-visible {
+  outline: 3px solid var(--color-fascist);
+  outline-offset: 3px;
+}
+
+.btn-secondary {
+  background: var(--color-bone);
+  color: var(--color-ink);
+}
+
+.btn-secondary:active:not(:disabled) {
+  background: var(--color-muted);
+  border-color: var(--color-muted);
+  color: var(--color-bone);
+}
+
+/* ── Form Fields ────────────────────────────────────────────────── */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  color: var(--color-muted);
+}
+
+input,
+select {
+  font-family: var(--font-body);
+  font-size: 18px;
+  min-height: var(--touch-min);
+  border: var(--border);
+  background: var(--color-bone);
+  color: var(--color-ink);
+  padding: 0 14px;
+  width: 100%;
+  appearance: none;
+  -webkit-appearance: none;
+  border-radius: 0;
+}
+
+input::placeholder {
+  color: var(--color-muted);
+  opacity: 1;
+}
+
+input:focus,
+select:focus {
+  outline: 3px solid var(--color-fascist);
+  outline-offset: 2px;
+}
+
+#input-room-code {
+  font-family: var(--font-mono);
+  font-size: 22px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%231A1510' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 40px;
+}
+
+/* ── Room Header ────────────────────────────────────────────────── */
+.room-header {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  border-bottom: var(--border);
+  padding-bottom: 12px;
+}
+
+.room-header__label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  color: var(--color-muted);
+}
+
+.room-header__code {
+  font-family: var(--font-mono);
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--color-ink);
+}
+
+/* ── Round Header (nomination / voting / result) ────────────────── */
+.round-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: var(--border);
+  padding-bottom: 10px;
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  color: var(--color-muted);
+}
+
+/* ── Lobby Player List ──────────────────────────────────────────── */
+#lobby-player-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+#lobby-player-list li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: var(--touch-min);
+  border: var(--border);
+  background: var(--color-bone);
+  padding: 0 14px;
+  font-family: var(--font-body);
+  font-size: 18px;
+}
+
+#lobby-player-list li::before {
+  font-size: 10px;
+  flex-shrink: 0;
+  color: var(--color-muted);
+  content: "○";
+}
+
+#lobby-player-list li[data-filled]::before {
+  content: "●";
+  color: var(--color-ink);
+}
+
+#lobby-player-list li:not([data-filled]) {
+  color: var(--color-muted);
+  font-style: italic;
+}
+
+.you-tag {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--color-muted);
+  margin-left: auto;
+}
+
+/* ── Nomination Banner ──────────────────────────────────────────── */
+.nomination-banner {
+  display: grid;
+  grid-template-columns: 1fr 3px 1fr;
+  border: var(--border);
+  min-height: 96px;
+  overflow: hidden;
+}
+
+.banner-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 10px;
+  gap: 4px;
+  text-align: center;
+}
+
+.banner-side--president {
+  background: var(--color-liberal);
+  color: var(--color-bone);
+}
+
+.banner-side--chancellor {
+  background: var(--color-fascist);
+  color: var(--color-bone);
+}
+
+.banner-divider {
+  background: var(--color-ink);
+}
+
+.banner-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  opacity: 0.75;
+  text-transform: uppercase;
+}
+
+.banner-name {
+  font-family: var(--font-display);
+  font-size: clamp(26px, 7vw, 34px);
+  line-height: 1;
+  letter-spacing: 0.03em;
+  word-break: break-word;
+}
+
+/* ── Nomination Screen ──────────────────────────────────────────── */
+.nom-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.nom-field__label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  color: var(--color-muted);
+}
+
+#nom-host-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* ── Voting Screen ──────────────────────────────────────────────── */
+.ballot-instruction {
+  font-family: var(--font-body);
+  font-size: 16px;
+  color: var(--color-muted);
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.vote-btn-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.vote-btn {
+  font-family: var(--font-display);
+  font-size: 36px;
+  letter-spacing: 0.08em;
+  min-height: 56px;
+  border: var(--border);
+  width: 100%;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.vote-btn:focus-visible {
+  outline: 3px solid var(--color-ink);
+  outline-offset: 3px;
+}
+
+.vote-btn--ja {
+  background: var(--color-liberal);
+  color: var(--color-bone);
+}
+
+.vote-btn--nein {
+  background: var(--color-fascist);
+  color: var(--color-bone);
+}
+
+.vote-btn:active:not(:disabled) {
+  filter: brightness(0.8);
+}
+
+.vote-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.ballot-count {
+  font-size: 15px;
+  color: var(--color-muted);
+  text-align: center;
+  letter-spacing: 0.04em;
+}
+
+/* ── Result Screen ──────────────────────────────────────────────── */
+.verdict {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 8vw, 44px);
+  letter-spacing: 0.04em;
+  line-height: 1.05;
+  text-align: center;
+  padding: 22px 16px;
+  border: var(--border);
+  background: var(--color-bone);
+  white-space: pre-line;
+}
+
+.verdict[data-elected="true"]  { color: var(--color-liberal); }
+.verdict[data-elected="false"] { color: var(--color-fascist); }
+
+.tally {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 18px 16px;
+  border: var(--border);
+  background: var(--color-bone);
+  font-family: var(--font-mono);
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+
+/* ── Error Toast ────────────────────────────────────────────────── */
+.error-toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-ink);
+  color: var(--color-parchment);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 1.4;
+  padding: 12px 20px;
+  border: 2px solid var(--color-fascist);
+  max-width: min(calc(100vw - 32px), 440px);
+  z-index: 100;
+  text-align: center;
+}
+
+/* ── Utilities ──────────────────────────────────────────────────── */
+.hidden {
+  display: none !important;
+}
+
+/* ── Reduced Motion ─────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}

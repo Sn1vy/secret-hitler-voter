@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>Secret Hitler — Vote</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <main id="app">
+
+    <!-- LANDING -->
+    <section data-screen="landing" data-active>
+      <h1 class="app-title">Secret<br>Hitler</h1>
+      <p class="app-subtitle">VOTING COMPANION</p>
+      <button id="btn-go-create">CREATE A ROOM</button>
+      <button id="btn-go-join" class="btn-secondary">JOIN A ROOM</button>
+    </section>
+
+    <!-- CREATE ROOM -->
+    <section data-screen="create-room">
+      <h2>NEW ROOM</h2>
+      <div class="field">
+        <label for="input-host-name">YOUR NAME</label>
+        <input id="input-host-name" type="text" maxlength="24"
+               autocomplete="off" autocapitalize="words"
+               placeholder="Enter your name">
+      </div>
+      <button id="btn-create-submit">CREATE ROOM</button>
+      <button id="btn-back-from-create" class="btn-secondary">BACK</button>
+    </section>
+
+    <!-- JOIN ROOM -->
+    <section data-screen="join-room">
+      <h2>JOIN ROOM</h2>
+      <div class="field">
+        <label for="input-room-code">ROOM CODE</label>
+        <input id="input-room-code" type="text" maxlength="7"
+               autocomplete="off" autocapitalize="characters"
+               spellcheck="false" placeholder="XX-1234">
+      </div>
+      <div class="field">
+        <label for="input-player-name">YOUR NAME</label>
+        <input id="input-player-name" type="text" maxlength="24"
+               autocomplete="off" autocapitalize="words"
+               placeholder="Enter your name">
+      </div>
+      <button id="btn-join-submit">JOIN</button>
+      <button id="btn-back-from-join" class="btn-secondary">BACK</button>
+    </section>
+
+    <!-- LOBBY -->
+    <section data-screen="lobby">
+      <div class="room-header">
+        <span class="room-header__label">ROOM</span>
+        <span id="lobby-room-code" class="room-header__code"></span>
+      </div>
+      <h2>THE LEGISLATURE</h2>
+      <ul id="lobby-player-list" aria-label="Players in room"></ul>
+      <p id="lobby-count" class="status-text"></p>
+      <button id="btn-start-game" disabled>START GAME</button>
+      <p id="lobby-waiting-msg" class="status-text hidden">Waiting for the host to begin…</p>
+    </section>
+
+    <!-- NOMINATION -->
+    <section data-screen="nomination">
+      <div class="round-header">
+        <span id="nom-round" class="mono"></span>
+        <span id="nom-room-code" class="mono"></span>
+      </div>
+      <div id="nom-banner" class="nomination-banner" aria-label="Current nominations"></div>
+      <div id="nom-host-controls" class="hidden">
+        <div class="nom-field">
+          <label for="select-president" class="nom-field__label">SELECT PRESIDENT</label>
+          <select id="select-president" aria-label="Select President">
+            <option value="">— choose —</option>
+          </select>
+        </div>
+        <div class="nom-field">
+          <label for="select-chancellor" class="nom-field__label">SELECT CHANCELLOR</label>
+          <select id="select-chancellor" aria-label="Select Chancellor">
+            <option value="">— choose —</option>
+          </select>
+        </div>
+        <button id="btn-call-vote" disabled>CALL THE VOTE</button>
+      </div>
+      <p id="nom-player-msg" class="status-text hidden">Waiting for the host to call the vote…</p>
+    </section>
+
+    <!-- VOTING -->
+    <section data-screen="voting">
+      <div class="round-header">
+        <span id="vote-round" class="mono"></span>
+        <span id="vote-room-code" class="mono"></span>
+      </div>
+      <div id="vote-banner" class="nomination-banner" aria-label="Government nominees"></div>
+      <div id="vote-controls">
+        <p class="ballot-instruction">Cast your ballot</p>
+        <div class="vote-btn-row">
+          <button id="btn-ja" class="vote-btn vote-btn--ja" aria-label="Vote Ja!">JA!</button>
+          <button id="btn-nein" class="vote-btn vote-btn--nein" aria-label="Vote Nein!">NEIN!</button>
+        </div>
+      </div>
+      <p id="vote-cast-msg" class="status-text hidden">Your ballot is cast.</p>
+      <p id="vote-ballot-count" class="mono ballot-count"></p>
+      <p id="vote-waiting-msg" class="status-text hidden">Waiting for the others…</p>
+    </section>
+
+    <!-- RESULT -->
+    <section data-screen="result">
+      <div class="round-header">
+        <span id="result-round" class="mono"></span>
+        <span id="result-room-code" class="mono"></span>
+      </div>
+      <div id="result-banner" class="nomination-banner" aria-label="Government nominees"></div>
+      <div id="result-verdict" class="verdict" role="status"></div>
+      <div id="result-tally" class="tally"></div>
+      <button id="btn-next-round" class="hidden">NEXT ROUND</button>
+      <p id="result-waiting-msg" class="status-text hidden">Waiting for the host to start the next round…</p>
+    </section>
+
+  </main>
+
+  <div id="error-toast" class="error-toast hidden" role="alert" aria-live="assertive"></div>
+
+  <script type="module" src="socket.js"></script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
