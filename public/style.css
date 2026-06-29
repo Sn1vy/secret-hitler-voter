@@ -444,6 +444,81 @@ select {
   display: none !important;
 }
 
+/* ── Voting Mode Toggle (lobby) ─────────────────────────────────── */
+#lobby-voting-mode {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 14px;
+  border: var(--border);
+  background: var(--color-bone);
+}
+
+.voting-mode-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-display);
+  font-size: 20px;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  user-select: none;
+}
+
+.voting-mode-label input[type="checkbox"] {
+  width: 22px;
+  height: 22px;
+  min-height: unset;
+  border: var(--border);
+  accent-color: var(--color-ink);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.voting-mode-hint {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--color-muted);
+  letter-spacing: 0.04em;
+}
+
+/* ── Per-player Vote List (result) ──────────────────────────────── */
+#result-vote-list {
+  display: flex;
+  flex-direction: column;
+  border: var(--border);
+  background: var(--color-bone);
+  overflow: hidden;
+}
+
+.vote-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 11px 14px;
+  font-family: var(--font-body);
+  font-size: 17px;
+  border-bottom: 1px solid var(--color-ink);
+}
+
+.vote-row:last-child {
+  border-bottom: none;
+}
+
+.vote-row__direction--ja {
+  font-family: var(--font-display);
+  font-size: 18px;
+  color: var(--color-liberal);
+  letter-spacing: 0.05em;
+}
+
+.vote-row__direction--nein {
+  font-family: var(--font-display);
+  font-size: 18px;
+  color: var(--color-fascist);
+  letter-spacing: 0.05em;
+}
+
 /* ── Reduced Motion ─────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

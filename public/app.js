@@ -49,10 +49,14 @@ const els = {
   resultBanner:     document.getElementById('result-banner'),
   resultVerdict:    document.getElementById('result-verdict'),
   resultTally:      document.getElementById('result-tally'),
-  btnNextRound:     document.getElementById('btn-next-round'),
-  resultWaitingMsg: document.getElementById('result-waiting-msg'),
+  btnNextRound:      document.getElementById('btn-next-round'),
+  resultWaitingMsg:  document.getElementById('result-waiting-msg'),
+  resultVoteList:    document.getElementById('result-vote-list'),
+  // lobby voting toggle
+  lobbyVotingMode:   document.getElementById('lobby-voting-mode'),
+  togglePublicVoting: document.getElementById('toggle-public-voting'),
   // error
-  errorToast:       document.getElementById('error-toast'),
+  errorToast:        document.getElementById('error-toast'),
 };
 
 // ── Socket ────────────────────────────────────────────────────────
@@ -186,10 +190,12 @@ function renderLobby(room) {
   if (room.isHost) {
     els.btnStartGame.classList.remove('hidden');
     els.lobbyWaitingMsg.classList.add('hidden');
+    els.lobbyVotingMode.classList.remove('hidden');
     els.btnStartGame.disabled = count < 5;
   } else {
     els.btnStartGame.classList.add('hidden');
     els.lobbyWaitingMsg.classList.remove('hidden');
+    els.lobbyVotingMode.classList.add('hidden');
   }
 }
 
@@ -270,6 +276,31 @@ function renderResult(room) {
     els.resultTally.appendChild(neinSpan);
   }
 
+  // Per-player vote breakdown (public voting mode only)
+  els.resultVoteList.innerHTML = '';
+  if (room.publicVoting) {
+    els.resultVoteList.classList.remove('hidden');
+    room.players.filter(p => !p.disconnected).forEach(p => {
+      const row = document.createElement('div');
+      row.className = 'vote-row';
+      const nameEl = document.createElement('span');
+      nameEl.textContent = p.name;
+      const dirEl = document.createElement('span');
+      const dir = p.voteDirection;
+      dirEl.textContent = dir === 'ja' ? 'JA!' : dir === 'nein' ? 'NEIN!' : '—';
+      dirEl.className = dir === 'ja'
+        ? 'vote-row__direction--ja'
+        : dir === 'nein'
+        ? 'vote-row__direction--nein'
+        : '';
+      row.appendChild(nameEl);
+      row.appendChild(dirEl);
+      els.resultVoteList.appendChild(row);
+    });
+  } else {
+    els.resultVoteList.classList.add('hidden');
+  }
+
   if (room.isHost) {
     els.btnNextRound.classList.remove('hidden');
     els.resultWaitingMsg.classList.add('hidden');
@@ -326,7 +357,9 @@ els.roomCodeInput.addEventListener('keydown', e => {
   if (e.key === 'Enter') els.playerNameInput.focus();
 });
 
-els.btnStartGame.addEventListener('click', () => socket.send('game:start'));
+els.btnStartGame.addEventListener('click', () => {
+  socket.send('game:start', { publicVoting: els.togglePublicVoting.checked });
+});
 
 els.selectPresident.addEventListener('change', () => {
   if (!state.room) return;

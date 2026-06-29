@@ -64,6 +64,13 @@
       <h2>THE LEGISLATURE</h2>
       <ul id="lobby-player-list" aria-label="Players in room"></ul>
       <p id="lobby-count" class="status-text"></p>
+      <div id="lobby-voting-mode" class="hidden">
+        <label class="voting-mode-label" for="toggle-public-voting">
+          <input type="checkbox" id="toggle-public-voting">
+          PUBLIC VOTING
+        </label>
+        <p class="voting-mode-hint">Each player's vote is revealed after the round</p>
+      </div>
       <button id="btn-start-game" disabled>START GAME</button>
       <p id="lobby-waiting-msg" class="status-text hidden">Waiting for the host to begin…</p>
     </section>
@@ -121,6 +128,7 @@
       <div id="result-banner" class="nomination-banner" aria-label="Government nominees"></div>
       <div id="result-verdict" class="verdict" role="status"></div>
       <div id="result-tally" class="tally"></div>
+      <div id="result-vote-list" class="hidden"></div>
       <button id="btn-next-round" class="hidden">NEXT ROUND</button>
       <p id="result-waiting-msg" class="status-text hidden">Waiting for the host to start the next round…</p>
     </section>

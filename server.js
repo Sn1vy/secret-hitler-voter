@@ -39,6 +39,7 @@ function createRoom(code, hostName) {
     ballotCount: { ja: 0, nein: 0, cast: 0 },
     lastResult: null,
     history: [],
+    publicVoting: false,
   };
 }
 
@@ -64,11 +65,13 @@ function getRoomSnapshot(room, requestingName) {
     failedElections: room.failedElections,
     ballotCount: room.ballotCount,
     lastResult: room.lastResult,
+    publicVoting: room.publicVoting,
     players: room.players.map(p => ({
       name: p.name,
       hasVoted: p.hasVoted,
       disconnected: p.disconnected || false,
       isYou: p.name === requestingName,
+      ...(room.publicVoting && room.phase === 'result' ? { voteDirection: p.voteDirection || null } : {}),
     })),
     isHost: room.host === requestingName,
     myName: requestingName,
@@ -87,7 +90,7 @@ function advanceToNomination(room) {
   room.phase = 'nomination';
   room.round += 1;
   room.nominations = { president: null, chancellor: null };
-  room.players.forEach(p => { p.hasVoted = false; });
+  room.players.forEach(p => { p.hasVoted = false; p.voteDirection = null; });
   room.ballotCount = { ja: 0, nein: 0, cast: 0 };
 }
 
@@ -188,6 +191,7 @@ function handleMessage(ws, raw) {
       if (room.phase !== 'lobby') return sendError(ws, 'Game already started.');
       const active = room.players.filter(p => !p.disconnected);
       if (active.length < 5) return sendError(ws, 'Need at least 5 players to start.');
+      room.publicVoting = !!msg.publicVoting;
       advanceToNomination(room);
       broadcastRoomState(room);
       break;
@@ -243,11 +247,11 @@ function handleMessage(ws, raw) {
       const { direction } = msg;
       if (direction !== 'ja' && direction !== 'nein') return sendError(ws, 'Invalid vote direction.');
 
-      // Secrecy: increment count only, never store direction on player
       if (direction === 'ja') room.ballotCount.ja++;
       else room.ballotCount.nein++;
       room.ballotCount.cast++;
       player.hasVoted = true;
+      if (room.publicVoting) player.voteDirection = direction;
 
       const active = room.players.filter(p => !p.disconnected);
       const total = active.length;
